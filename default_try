@@ -1,0 +1,21 @@
+
+server {
+	listen 80 default_server;	
+    underscores_in_headers on;
+
+	location / {
+        root /var/www/html;
+		try_files $uri /index.html;
+	}
+
+	location /semantic {
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-NginX-Proxy true;
+    proxy_pass https://still-thicket-12104.herokuapp.com;
+    proxy_ssl_session_reuse off;
+    proxy_set_header Host $http_host;
+    proxy_cache_bypass $http_upgrade;
+    proxy_redirect off;
+}
+}
